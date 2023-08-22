@@ -1,0 +1,15 @@
+{
+    "configurations": [
+        {
+            "name": "Linux",
+            "includePath": [
+                "/usr/src/linux-headers-6.1.0-11-common/include"
+            ],
+            "defines": [
+                "__TARGET_ARCH_x86",
+                "__KERNEL__"
+            ]
+        }
+    ],
+    "version": 4
+}
