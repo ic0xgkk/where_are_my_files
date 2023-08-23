@@ -1,17 +1,29 @@
 #include <linux/init.h>
 #include <linux/module.h>
 #include <linux/sched.h>
+#include <linux/fs.h>
 
 static int __init mod_init(void)
 {
+	unsigned long long begin, end, offset, size;
+
 	struct task_struct task;
+	begin = (unsigned long long)&task;
+	end = (unsigned long long)&task.files;
+	offset = end - begin;
+	size = (unsigned long long)sizeof(task);
+	pr_info("wamf: task_struct->files_struct(files) offset: %llu, task_struct size: %llu \n", offset, size);
 
-	unsigned long long begin = (unsigned long long)&task;
-	unsigned long long end = (unsigned long long)&task.files;
-	unsigned long long offset = end - begin;
-	unsigned long long size = (unsigned long long)sizeof(task);
+	struct file file;
+	begin = (unsigned long long)&file;
+	end = (unsigned long long)&file.f_op;
+	offset = end - begin;
+	size = (unsigned long long)sizeof(file);
+	pr_info("wamf: file->file_operations(f_op) offset: %llu, file size: %llu \n", offset, size);
 
-	pr_info("files_struct offset: %llu, task_struct size: %llu \n", offset, size);
+	end = (unsigned long long)&file.private_data;
+	offset = end - begin;
+	pr_info("wamf: file->void *(private_data) offset: %llu, file size: %llu \n", offset, size);
 
 	return 0;
 }
